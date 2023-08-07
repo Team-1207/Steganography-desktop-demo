@@ -78,11 +78,11 @@ int BmpSteganoMaster::write_hidden_text(QString text, bool enableAlphaChannel) {
         }
 
         if (m_img.hasAlphaChannel( )) {
-            qDebug() << QString( ).sprintf("[write_hidden_text] rgba <= 0x%.2X 0x%.2X 0x%.2X 0x%.2X",
+            qDebug() << QString( ).asprintf("[write_hidden_text] rgba <= 0x%.2X 0x%.2X 0x%.2X 0x%.2X",
                                            qRed(rgb), qGreen(rgb), qBlue(rgb), qAlpha(rgb)).toStdString( ).c_str( );
             qDebug() << "[write_hidden_text] bits: " << bits[0] << bits[1] << bits[2] << bits[3];
         } else {
-            qDebug() << QString( ).sprintf("[write_hidden_text] rgb <= 0x%.2X 0x%.2X 0x%.2X",
+            qDebug() << QString( ).asprintf("[write_hidden_text] rgb <= 0x%.2X 0x%.2X 0x%.2X",
                                            qRed(rgb), qGreen(rgb), qBlue(rgb)).toStdString( ).c_str( );
             qDebug() << "[write_hidden_text] bits: " << bits[0] << bits[1] << bits[2];
         }
@@ -116,11 +116,11 @@ QString BmpSteganoMaster::read_hidden_text() {
 
         if (ba.get_cur_pos() < 20) {
             if (m_img.hasAlphaChannel( )) {
-                qDebug( ) << QString( ).sprintf("[read_hidden_text] rgba => 0x%.2X 0x%.2X 0x%.2X 0x%.2X",
+                qDebug( ) << QString( ).asprintf("[read_hidden_text] rgba => 0x%.2X 0x%.2X 0x%.2X 0x%.2X",
                                                  qRed(rgb), qGreen(rgb), qBlue(rgb), qAlpha(rgb)).toStdString().c_str();
                 qDebug( ) << "[read_hidden_text] bits: " << bits[0] << bits[1] << bits[2] << bits[3];
             } else {
-                qDebug( ) << QString( ).sprintf("[read_hidden_text] rgb => 0x%.2X 0x%.2X 0x%.2X",
+                qDebug( ) << QString( ).asprintf("[read_hidden_text] rgb => 0x%.2X 0x%.2X 0x%.2X",
                                                  qRed(rgb), qGreen(rgb), qBlue(rgb)).toStdString().c_str();
                 qDebug( ) << "[read_hidden_text] bits: " << bits[0] << bits[1] << bits[2];
             }
