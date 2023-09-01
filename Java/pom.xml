@@ -123,6 +123,12 @@
             <classifier>${javafx.platform}</classifier>
         </dependency>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier>
+        </dependency>
+        <dependency>
             <groupId>com.panemu</groupId>
             <artifactId>tiwulfx</artifactId>
             <version>3.4</version>
