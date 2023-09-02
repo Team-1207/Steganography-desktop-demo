@@ -1,5 +1,6 @@
 package ru.shemplo.sdd;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -25,8 +26,8 @@ public class SteganographyDesktopDemo extends Application {
     public void start (Stage stage) throws Exception {
         final var scene = new Scene (makeScene (stage.getOwner ()));
         
+        stage.setTitle ("Стеганограф (только чтение)");
         stage.getIcons ().add (UIIcons.mail64);
-        stage.setTitle ("Стеганограф");
         stage.setScene (scene);
         stage.show ();
         
@@ -36,12 +37,11 @@ public class SteganographyDesktopDemo extends Application {
     private Parent makeScene (Window window) {
         final var column = new VBox (8.0);
         column.setPadding (new Insets (8.0));
-        column.setMinWidth (800.0);
         
         final var imagePreview = new ImageView ();
         column.getChildren ().add (imagePreview);
-        imagePreview.setFitWidth (700.0);
-        imagePreview.setFitHeight (700.0 / 16.0 * 9.0);
+        imagePreview.setFitWidth (800.0);
+        imagePreview.setFitHeight (imagePreview.getFitWidth () / 16.0 * 9.0);
         
         final var chooseRow = new HBox (8.0);
         column.getChildren ().add (chooseRow);
@@ -56,8 +56,15 @@ public class SteganographyDesktopDemo extends Application {
         chooseButton.setOnMouseClicked (me -> {
             final var chooser = new FileChooser ();
             
-            final var mainFilter = new ExtensionFilter ("Image", "*.png", "*.jpg");
+            if (System.getProperty ("os.name").contains ("Win")) {                
+                chooser.setInitialDirectory (new File ("C:\\Users\\" + System.getProperty ("user.name") + "\\Downloads"));
+            } else {
+                chooser.setInitialDirectory (new File ("/home/" + System.getProperty ("user.name") + "/downloads"));
+            }
+            
+            final var mainFilter = new ExtensionFilter ("Images", "*.png", "*.jpg", "*.bmp");
             chooser.getExtensionFilters ().add (mainFilter);
+            chooser.getExtensionFilters ().add (new ExtensionFilter ("All files", "*.*"));
             chooser.setSelectedExtensionFilter (mainFilter);
             
             final var file = chooser.showOpenDialog (window);
@@ -65,10 +72,8 @@ public class SteganographyDesktopDemo extends Application {
                 try (final var is = new FileInputStream (file)) {
                     final var image = new Image (is);
                     
+                    previewText.setText (SteganographyEngine.getInstance ().decode (image));
                     imagePreview.setImage (image);
-                    
-                    final var text = SteganographyEngine.getInstance ().decode (image);
-                    previewText.setText (text);
                 } catch (IOException ioe) {
                     ioe.printStackTrace ();
                 }
