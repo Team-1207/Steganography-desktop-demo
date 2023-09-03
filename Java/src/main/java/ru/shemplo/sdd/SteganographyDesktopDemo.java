@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -45,10 +46,15 @@ public class SteganographyDesktopDemo extends Application {
         
         final var chooseRow = new HBox (8.0);
         column.getChildren ().add (chooseRow);
-        chooseRow.setAlignment (Pos.CENTER);
+        chooseRow.setAlignment (Pos.BASELINE_LEFT);
         
         final var chooseButton = new Button ("Выбрать изображение");
         chooseRow.getChildren ().add (chooseButton);
+        
+        chooseRow.getChildren ().add (new Text ("Путь к текущему изображению: "));
+        
+        final var filepathText = new Text ("(изображение не выбрано)");
+        chooseRow.getChildren ().add (filepathText);        
         
         final var previewText = new TextArea ();
         column.getChildren ().add (previewText);
@@ -73,6 +79,7 @@ public class SteganographyDesktopDemo extends Application {
                     final var image = new Image (is);
                     
                     previewText.setText (SteganographyEngine.getInstance ().decode (image));
+                    filepathText.setText (file.getAbsolutePath ());
                     imagePreview.setImage (image);
                 } catch (IOException ioe) {
                     ioe.printStackTrace ();
