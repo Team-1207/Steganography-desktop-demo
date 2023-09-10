@@ -33,8 +33,9 @@ public class InputSocketListener implements Runnable {
                 ) {
                     log.info ("Connection is established");
                     
-                    final var filename = is.readNBytes (is.read ());
-                    final var file = new File (SAVE_DIR, new String (filename, StandardCharsets.UTF_8));
+                    final var filename = new String (is.readNBytes (is.read ()), StandardCharsets.UTF_8);
+                    final var file = new File (SAVE_DIR, filename);
+                    
                     log.info ("Trying to save `{}` file to `{}`...", filename, file.getAbsolutePath ());
                     
                     try (final var os = new FileOutputStream (file)) {
