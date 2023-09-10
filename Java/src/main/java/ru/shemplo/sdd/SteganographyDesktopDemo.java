@@ -23,6 +23,10 @@ import javafx.stage.Window;
 
 public class SteganographyDesktopDemo extends Application {
 
+    public static final File DOWNLOADS_DIR = System.getProperty ("os.name").contains ("Win")
+        ? new File ("C:\\Users\\" + System.getProperty ("user.name") + "\\Downloads")
+        : new File ("/home/" + System.getProperty ("user.name") + "/downloads");
+    
     @Override
     public void start (Stage stage) throws Exception {
         final var scene = new Scene (makeScene (stage.getOwner ()));
@@ -61,17 +65,12 @@ public class SteganographyDesktopDemo extends Application {
         
         chooseButton.setOnMouseClicked (me -> {
             final var chooser = new FileChooser ();
-            
-            if (System.getProperty ("os.name").contains ("Win")) {                
-                chooser.setInitialDirectory (new File ("C:\\Users\\" + System.getProperty ("user.name") + "\\Downloads"));
-            } else {
-                chooser.setInitialDirectory (new File ("/home/" + System.getProperty ("user.name") + "/downloads"));
-            }
-            
+                        
             final var mainFilter = new ExtensionFilter ("Images", "*.png", "*.jpg", "*.bmp");
             chooser.getExtensionFilters ().add (mainFilter);
             chooser.getExtensionFilters ().add (new ExtensionFilter ("All files", "*.*"));
             chooser.setSelectedExtensionFilter (mainFilter);
+            chooser.setInitialDirectory (DOWNLOADS_DIR);
             
             final var file = chooser.showOpenDialog (window);
             if (file != null && file.canRead ()) {                
