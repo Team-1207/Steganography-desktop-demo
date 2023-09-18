@@ -11,7 +11,7 @@ public class UIIcons {
     
     private static Image loadIcon (String name) {
         final var path = String.format ("/%s/%s", "icons", name);
-        try (final var is = UIIcons.class.getResourceAsStream (path)) {            
+        try (final var is = UIIcons.class.getResourceAsStream (path)) {
             return Optional.ofNullable (is).map (Image::new).orElse (null);
         } catch (IOException ioe) {
             ioe.printStackTrace ();

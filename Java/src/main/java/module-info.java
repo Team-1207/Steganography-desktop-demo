@@ -8,5 +8,7 @@ module ru.shemplo.dss {
     requires java.desktop;
     requires tiwulfx;
     
+    //requires org.apache.commons.imaging;
+    
     exports ru.shemplo.sdd;
 }

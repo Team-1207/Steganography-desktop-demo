@@ -21,6 +21,13 @@
         <slf4j.version>1.7.33</slf4j.version>
     </properties>
     
+    <repositories>
+        <repository>
+            <id>google</id>
+            <url>https://maven.google.com/</url>
+        </repository>
+    </repositories>
+    
     <profiles>
         <profile>
             <id>win</id>

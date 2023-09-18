@@ -14,6 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -60,8 +61,30 @@ public class SteganographyDesktopDemo extends Application {
         final var filepathText = new Text ("(изображение не выбрано)");
         chooseRow.getChildren ().add (filepathText);        
         
+        final var previewRow = new HBox (8.0);
+        column.getChildren ().add (previewRow);
+        
         final var previewText = new TextArea ();
-        column.getChildren ().add (previewText);
+        previewRow.getChildren ().add (previewText);
+        previewText.setMaxHeight (75.0);
+        
+        final var exifColumn = new VBox (8.0);
+        previewRow.getChildren ().add (exifColumn);
+        
+        exifColumn.getChildren ().add (new Text ("EXIF metadata"));
+        
+        final var exifDescription = new Text ();
+        exifColumn.getChildren ().add (exifDescription);
+        
+        final var exifCopyright = new Text ();
+        exifColumn.getChildren ().add (exifCopyright);
+        
+        final var previewRawRow = new HBox (8.0);
+        column.getChildren ().add (previewRawRow);
+        
+        final var previewRawText = new TextArea ();
+        previewRawRow.getChildren ().add (previewRawText);
+        HBox.setHgrow (previewRawText, Priority.ALWAYS);
         
         chooseButton.setOnMouseClicked (me -> {
             final var chooser = new FileChooser ();
@@ -80,6 +103,21 @@ public class SteganographyDesktopDemo extends Application {
                     previewText.setText (SteganographyEngine.getInstance ().decode (image));
                     filepathText.setText (file.getAbsolutePath ());
                     imagePreview.setImage (image);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace ();
+                }
+                
+                try (final var is = new FileInputStream (file)) {
+                    final var bytes = is.readNBytes (20000);
+                    int start = 79, i = start;
+                    while (bytes [i++] != 0) {}
+                    exifDescription.setText ("Description: " + new String (bytes, start, i - start));
+                    
+                    start = i;
+                    while (bytes [i++] != 0) {}
+                    exifCopyright.setText ("Copyright: " + new String (bytes, start, i - start));
+                    
+                    previewRawText.setText (new String (bytes));
                 } catch (IOException ioe) {
                     ioe.printStackTrace ();
                 }
